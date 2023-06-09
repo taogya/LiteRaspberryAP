@@ -19,7 +19,7 @@ i/f below is for example eth0, wlan0, usb0, etc..
 ### Router
 ```
                    target
-                   v      ap0
+                   v      wlan0
 +----------+   i/f +----+ <---> dev_1
 | internet | <---> | AP | <---> :
 +----------+       +----+ <---> dev_n
@@ -29,7 +29,7 @@ work in progress
 ### Bridge
 ```
                                      target
-                                     v      ap0
+                                     v      wlan0
 +----------+   i/f +--------+ br0    +----+ <---> dev_1
 | internet | <---> | Bridge | <----> | AP | <---> :
 +----------+       +--------+        +----+ <---> dev_n
@@ -38,7 +38,7 @@ work in progress
 ### Standalone
 ```
                    target
-                   v      ap0
+                   v      wlan0
 +----------+   i/f +----+ <---> dev_1
 | internet | <-x-> | AP | <---> :
 +----------+       +----+ <---> dev_n
