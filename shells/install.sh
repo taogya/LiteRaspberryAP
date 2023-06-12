@@ -24,12 +24,12 @@ add_interfaces() {
     \cp -f "$1"/* /etc/network/interfaces.d/
     chmod 644 /etc/network/interfaces.d/*
     chown root:root /etc/network/interfaces.d/*
-    systemctl stop dhcpcd
     for DEV in "$1"/*
     do
         ip addr flush dev "$(basename "${DEV}")"
     done
-    systemctl start dhcpcd
+    systemctl restart dhcpcd
+    systemctl restart networking
 }
 
 install_dhcpcd() {
