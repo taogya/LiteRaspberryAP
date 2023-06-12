@@ -121,6 +121,20 @@ if ! ping -c 4 8.8.8.8 > /dev/null 2>&1; then
     exit 1
 fi
 
+systemctl stop hostapd
+systemctl disable hostapd
+systemctl stop dnsmasq
+systemctl disable dnsmasq
+echo "/etc/network/interfaces.d/ -> $(ls /etc/network/interfaces.d/)"
+printf "Do you remove all in /etc/network/interfaces.d/? [Y/n]: "
+read -r INIT_DONE
+case "${INIT_DONE}" in
+    [yY])
+        rm -f /etc/network/interfaces.d/*
+        systemctl restart networking
+    ;;
+esac
+
 add_interfaces "$1"/interfaces
 install_dhcpcd "$1"/dhcpcd.conf
 install_dnsmasq "$1"/dnsmasq.conf
