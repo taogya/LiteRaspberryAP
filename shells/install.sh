@@ -18,6 +18,19 @@ help() {
     echo "==============================================================="
 }
 
+create_ap_interface() {
+    mkdir -p /root/configs/rules.d/
+    WLAN0_MACADDR="$(iw dev | grep wlan0 -A 6 | grep addr | grep -o -E '([0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5})')"
+    iw phy phy0 interface add ap0 type __ap
+    ip link set ap0 address "${WLAN0_MACADDR}"
+    echo "SUBSYSTEM==\"ieee80211\", \
+ACTION==\"add|change\", \
+ATTR{macaddress}==\"${WLAN0_MACADDR}\", \
+KERNEL==\"phy0\", \
+RUN+=\"/sbin/iw phy phy0 interface add ap0 type __ap\", \
+RUN+=\"/bin/ip link set ap0 address ${WLAN0_MACADDR}\"" > /etc/udev/rules.d/99-ap0.rules
+}
+
 add_interfaces() {
     # $1: conf path
     if ! ls "$1" > /dev/null 2>&1; then
@@ -125,6 +138,7 @@ if ! ping -c 4 8.8.8.8 > /dev/null 2>&1; then
     exit ${EXE_ERROR}
 fi
 
+create_ap_interface
 add_interfaces "$1"/interfaces
 install_bridge
 install_dhcpcd "$1"/dhcpcd.conf
