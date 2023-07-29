@@ -8,6 +8,8 @@ $ sudo apt-get update
 $ sudo apt-get upgrade
 $ sudo apt-get dist-upgrade
 $ 
+$ sudo apt-get install git
+$ 
 $ mkdir -p ~/work && cd ~/work
 $ git clone https://github.com/taogya/LiteRaspberryAP.git
 $ cd LiteRaspberryAP
