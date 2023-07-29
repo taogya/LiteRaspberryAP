@@ -1,3 +1,3 @@
 auto br0
 iface br0 inet dhcp
-bridge_ports usb0 wlan0
+bridge_ports wlan0 ap0
