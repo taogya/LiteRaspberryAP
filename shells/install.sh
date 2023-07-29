@@ -18,6 +18,12 @@ help() {
     echo "==============================================================="
 }
 
+install_bridge() {
+    apt-get install -y bridge-utils
+    echo "bridge interfaces:"
+    brctl show
+}
+
 create_ap_interface() {
     echo "===== create ap interface ====="
     WLAN0_MACADDR="$(iw dev | grep wlan0 -A 6 | grep addr | grep -o -E '([0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5})')"
@@ -57,12 +63,6 @@ add_interfaces() {
     done
     systemctl restart dhcpcd
     systemctl restart networking
-}
-
-install_bridge() {
-    apt-get install -y bridge-utils
-    echo "bridge interfaces:"
-    brctl show
 }
 
 install_dhcpcd() {
@@ -149,10 +149,10 @@ if ! ping -c 4 8.8.8.8 > /dev/null 2>&1; then
     exit ${EXE_ERROR}
 fi
 
+install_bridge
 create_ap_interface
 set_wpa_supplicant "$1"/wpa_supplicant.conf
 add_interfaces "$1"/interfaces
-install_bridge
 install_dhcpcd "$1"/dhcpcd.conf
 install_dnsmasq "$1"/dnsmasq.conf
 install_hostapd "$1"/hostapd.conf
