@@ -59,7 +59,7 @@ modify conf below.
   - [dnsmasq.conf](conf/standalone/dnsmasq.conf)  
     be copied to `/etc/dnsmasq.conf`
 
-modify interfaces below.
+modify interfaces below. (be copied to `/etc/network/interfaces.d/*`)
   - [wlan0](conf/standalone/interfaces/wlan0)
 
 install
