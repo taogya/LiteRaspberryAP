@@ -19,7 +19,7 @@ help() {
 }
 
 create_ap_interface() {
-    mkdir -p /root/configs/rules.d/
+    echo "===== create ap interface ====="
     WLAN0_MACADDR="$(iw dev | grep wlan0 -A 6 | grep addr | grep -o -E '([0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5})')"
     iw phy phy0 interface add ap0 type __ap
     ip link set ap0 address "${WLAN0_MACADDR}"
@@ -29,6 +29,17 @@ ATTR{macaddress}==\"${WLAN0_MACADDR}\", \
 KERNEL==\"phy0\", \
 RUN+=\"/sbin/iw phy phy0 interface add ap0 type __ap\", \
 RUN+=\"/bin/ip link set ap0 address ${WLAN0_MACADDR}\"" > /etc/udev/rules.d/99-ap0.rules
+}
+
+set_wpa_supplicant() {
+    # $1: conf path
+    if ! ls "$1" > /dev/null 2>&1; then
+        return ${FILE_NOT_EXISTS}
+    fi
+    echo "===== set wpa_supplicant ====="
+    \cp -f "$1" /etc/wpa_supplicant/wpa_supplicant.conf
+    systemctl enable wpa_supplicant
+    systemctl start wpa_supplicant
 }
 
 add_interfaces() {
@@ -139,6 +150,7 @@ if ! ping -c 4 8.8.8.8 > /dev/null 2>&1; then
 fi
 
 create_ap_interface
+set_wpa_supplicant "$1"/wpa_supplicant.conf
 add_interfaces "$1"/interfaces
 install_bridge
 install_dhcpcd "$1"/dhcpcd.conf
