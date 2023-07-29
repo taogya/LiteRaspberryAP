@@ -1,5 +1,8 @@
 #!/bin/sh
 
+EXE_ERROR=1
+FILE_NOT_EXISTS=2
+
 # ===== function =================================================="
 help() {
     echo "===== Lite Raspberry AP Installer ============================="
@@ -18,7 +21,7 @@ help() {
 add_interfaces() {
     # $1: conf path
     if ! ls "$1" > /dev/null 2>&1; then
-        return 1
+        return ${FILE_NOT_EXISTS}
     fi
     echo "===== add interfaces ====="
     \cp -f "$1"/* /etc/network/interfaces.d/
@@ -32,10 +35,16 @@ add_interfaces() {
     systemctl restart networking
 }
 
+install_bridge() {
+    apt-get install -y bridge-utils
+    echo "bridge interfaces:"
+    brctl show
+}
+
 install_dhcpcd() {
     # $1: conf path
     if ! ls "$1" > /dev/null 2>&1; then
-        return 1
+        return ${FILE_NOT_EXISTS}
     fi
     echo "===== install dhcpcd ====="
     systemctl stop dhcpcd
@@ -54,7 +63,7 @@ install_dhcpcd() {
 
 install_dnsmasq() {
     if ! ls "$1" > /dev/null 2>&1; then
-        return 1
+        return ${FILE_NOT_EXISTS}
     fi
     echo "===== install dnsmasq ====="
     apt-get install -y dnsmasq
@@ -75,7 +84,7 @@ install_dnsmasq() {
 install_hostapd() {
     # $1: conf path
     if ! ls "$1" > /dev/null 2>&1; then
-        return 1
+        return ${FILE_NOT_EXISTS}
     fi
     echo "===== install hostapd ====="
     apt-get install -y hostapd
@@ -99,44 +108,27 @@ install_hostapd() {
     systemctl start hostapd
 }
 
-install_bridge() {
-    apt-get install -y bridge-utils
-
-}
-
 # ===== script =================================================="
 if [ "$(whoami)" != "root" ]; then
     echo "===== please execute with root. ===="
-    exit 1
+    exit ${EXE_ERROR}
 fi
 
 if [ "$#" != 1 ]; then
     echo "===== invalid argument. ===="
     help
-    exit 1
+    exit ${EXE_ERROR}
 fi
 
 if ! ping -c 4 8.8.8.8 > /dev/null 2>&1; then
     echo "===== can not connect to internet. ====";
-    exit 1
+    exit ${EXE_ERROR}
 fi
 
-systemctl stop hostapd
-systemctl disable hostapd
-systemctl stop dnsmasq
-systemctl disable dnsmasq
-echo "/etc/network/interfaces.d/ -> $(ls /etc/network/interfaces.d/)"
-printf "Do you remove all in /etc/network/interfaces.d/? [Y/n]: "
-read -r INIT_DONE
-case "${INIT_DONE}" in
-    [yY])
-        rm -f /etc/network/interfaces.d/*
-        systemctl restart networking
-    ;;
-esac
-
 add_interfaces "$1"/interfaces
+install_bridge
 install_dhcpcd "$1"/dhcpcd.conf
 install_dnsmasq "$1"/dnsmasq.conf
 install_hostapd "$1"/hostapd.conf
-install_bridge
+
+reboot now
