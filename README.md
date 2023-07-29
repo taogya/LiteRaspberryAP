@@ -27,11 +27,14 @@ i/f below is for example eth0, wlan0, usb0, etc..
 +----------+       +--------+        +----+ <---> dev_n
 ```
 modify conf below.
-  - [dhcpcd.conf](conf/bridge/dhcpcd.conf)
-  - [hostapd.conf](conf/bridge/hostapd.conf)
-  - [wpa_supplicant.conf](conf/bridge/wpa_supplicant.conf)
+  - [dhcpcd.conf](conf/bridge/dhcpcd.conf)  
+    be copied to `/etc/dhcpcd.conf`
+  - [hostapd.conf](conf/bridge/hostapd.conf)  
+    be copied to `/etc/hostapd/hostapd.conf`
+  - [wpa_supplicant.conf](conf/bridge/wpa_supplicant.conf)  
+    be copied to `/etc/wpa_supplicant/wpa_supplicant.conf`
 
-modify interfaces below.
+modify interfaces below. (be copied to `/etc/network/interfaces.d/*`)
   - [wlan0](conf/bridge/interfaces/wlan0)
   - [br0](conf/bridge/interfaces/br0)
 
@@ -49,9 +52,12 @@ sudo sh shells/install.sh conf/bridge
 +----------+       +----+ <---> dev_n
 ```
 modify conf below.
-  - [dhcpcd.conf](conf/standalone/dhcpcd.conf)
-  - [hostapd.conf](conf/standalone/hostapd.conf)
-  - [dnsmasq.conf](conf/standalone/dnsmasq.conf)
+  - [dhcpcd.conf](conf/standalone/dhcpcd.conf)  
+    be copied to `/etc/dhcpcd.conf`
+  - [hostapd.conf](conf/standalone/hostapd.conf)  
+    be copied to `/etc/hostapd/hostapd.conf`
+  - [dnsmasq.conf](conf/standalone/dnsmasq.conf)  
+    be copied to `/etc/dnsmasq.conf`
 
 modify interfaces below.
   - [wlan0](conf/standalone/interfaces/wlan0)
