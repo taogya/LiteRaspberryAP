@@ -43,9 +43,20 @@ case "${INIT_DONE}" in
     ;;
 esac
 
+echo "===== remove bridge-utils ====="
+printf "Do you remove bridge-utils? [Y/n]: "
+read -r INIT_DONE
+case "${INIT_DONE}" in
+    [yY])
+        apt-get purge --auto-remove -y bridge-utils
+    ;;
+esac
+
 echo "===== manual operation ====="
 echo "operate by manual to modify or remove file below."
 echo "  /etc/hostapd"
 echo "  /etc/dnsmasq.conf"
 echo "  /etc/dhcpcd.conf"
 echo "  /etc/network/interfaces.d/*"
+echo "  /etc/wpa_supplicant/wpa_supplicant.conf"
+echo "  /etc/udev/rules.d/99-ap0.rules"
