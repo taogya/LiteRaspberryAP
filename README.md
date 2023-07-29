@@ -14,18 +14,8 @@ $ cd LiteRaspberryAP
 $ chmod -R +x shells/
 ```
 
-## Select Mode & Modify conf
+## Select Mode & Modify conf, install
 i/f below is for example eth0, wlan0, usb0, etc..
-### Router
-```
-                   target
-                   v      wlan0
-+----------+   i/f +----+ <---> dev_1
-| internet | <---> | AP | <---> :
-+----------+       +----+ <---> dev_n
-                   ip forwarding
-```
-work in progress
 ### Bridge
 ```
                                      target
@@ -34,7 +24,19 @@ work in progress
 | internet | <---> | Bridge | <----> | AP | <---> :
 +----------+       +--------+        +----+ <---> dev_n
 ```
-work in progress
+modify conf below.
+  - [dhcpcd.conf](conf/bridge/dhcpcd.conf)
+  - [hostapd.conf](conf/bridge/hostapd.conf)
+
+modify interfaces below.
+  - [wlan0](conf/bridge/interfaces/wlan0)
+  - [br0](conf/bridge/interfaces/br0)
+
+install
+```sh
+sudo sh shells/install.sh conf/bridge
+```
+
 ### Standalone
 ```
                    target
@@ -43,11 +45,17 @@ work in progress
 | internet | <-x-> | AP | <---> :
 +----------+       +----+ <---> dev_n
 ```
-work in progress
+modify conf below.
+  - [dhcpcd.conf](conf/standalone/dhcpcd.conf)
+  - [hostapd.conf](conf/standalone/hostapd.conf)
+  - [dnsmasq.conf](conf/standalone/dnsmasq.conf)
 
-## Install
+modify interfaces below.
+  - [wlan0](conf/standalone/interfaces/wlan0)
+
+install
 ```sh
-sudo sh shells/install.sh
+sudo sh shells/install.sh conf/standalone
 ```
 
 # Uninstallation
