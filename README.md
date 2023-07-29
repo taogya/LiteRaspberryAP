@@ -29,6 +29,7 @@ i/f below is for example eth0, wlan0, usb0, etc..
 modify conf below.
   - [dhcpcd.conf](conf/bridge/dhcpcd.conf)
   - [hostapd.conf](conf/bridge/hostapd.conf)
+  - [wpa_supplicant.conf](conf/bridge/wpa_supplicant.conf)
 
 modify interfaces below.
   - [wlan0](conf/bridge/interfaces/wlan0)
