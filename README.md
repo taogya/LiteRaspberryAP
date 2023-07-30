@@ -35,6 +35,7 @@ modify conf below.
     be copied to `/etc/wpa_supplicant/wpa_supplicant.conf`
 
 modify interfaces below. (be copied to `/etc/network/interfaces.d/*`)
+  - [ap0](conf/bridge/interfaces/ap0)
   - [wlan0](conf/bridge/interfaces/wlan0)
   - [br0](conf/bridge/interfaces/br0)
 
@@ -60,6 +61,7 @@ modify conf below.
     be copied to `/etc/dnsmasq.conf`
 
 modify interfaces below. (be copied to `/etc/network/interfaces.d/*`)
+  - [ap0](conf/standalone/interfaces/ap0)
   - [wlan0](conf/standalone/interfaces/wlan0)
 
 install
